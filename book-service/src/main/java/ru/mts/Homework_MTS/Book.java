@@ -5,18 +5,6 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class Book {
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Book book = (Book) o;
-        return Objects.equals(id, book.id) && Objects.equals(author, book.author) && Objects.equals(title, book.title) && Objects.equals(tags, book.tags);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, author, title, tags);
-    }
 
     private static final AtomicLong idGenerator = new AtomicLong(0);
     private Long id;
@@ -61,6 +49,18 @@ public class Book {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Book book = (Book) o;
+        return Objects.equals(id, book.id) && Objects.equals(author, book.author) && Objects.equals(title, book.title) && Objects.equals(tags, book.tags);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, author, title, tags);
     }
     public static Long generateID() {
         return idGenerator.incrementAndGet();

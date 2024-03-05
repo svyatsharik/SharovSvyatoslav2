@@ -2,10 +2,7 @@ package ru.mts.Homework_MTS;
 
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
@@ -15,8 +12,11 @@ public class InMemoryBookRepository implements BookRepository {
 
     public InMemoryBookRepository() {
         books = new CopyOnWriteArrayList<>();
-        books.add(new Book("Петров А.В.", "Основы кройки и шитья", new HashSet<>()));
-        books.add(new Book("Мошкина А.В", "Введение в архитектурный дизайн", new HashSet<>()));
+        Set<String> hashSet = new HashSet<>();
+        hashSet.add("Основы");
+        books.add(new Book("Петров А.В.", "Основы кройки и шитья", hashSet));
+        hashSet.add("Введение");
+        books.add(new Book("Мошкина А.В", "Введение в архитектурный дизайн", hashSet));
     }
 
     @Override

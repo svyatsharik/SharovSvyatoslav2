@@ -5,11 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import java.util.Set;
 
 public class BookRequestToCreate {
-    public BookRequestToCreate(String author, String title, Set<String> tags) {
-        this.author = author;
-        this.title = title;
-        this.tags = tags;
-    }
 
     @NotNull
     private String author;
@@ -17,6 +12,11 @@ public class BookRequestToCreate {
     private String title;
     @NotNull
     private Set<String> tags;
+    public BookRequestToCreate(String author, String title, Set<String> tags) {
+        this.author = author;
+        this.title = title;
+        this.tags = tags;
+    }
 
     public Set<String> getTags() {
         return tags;
