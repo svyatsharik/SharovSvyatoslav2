@@ -4,14 +4,12 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.mts.Homework_MTS.Book;
-import ru.mts.Homework_MTS.BookRepository;
+import ru.mts.Homework_MTS.Entity.Author;
+import ru.mts.Homework_MTS.Entity.Book;
+import ru.mts.Homework_MTS.Repository.BookRepository;
 import ru.mts.Homework_MTS.dto.BookRequestToCreate;
 import ru.mts.Homework_MTS.dto.BookRequestToUpdate;
 
-import java.util.List;
-
-import static java.util.Objects.requireNonNullElse;
 
 @RestController
 @RequestMapping("/api")
@@ -23,39 +21,27 @@ public class BookController {
         this.bookRepository = bookRepository;
     }
 
-    @GetMapping("/books")
-    public List<Book> bookTable() {
-        return bookRepository.findAll();
-    }
 
-    @GetMapping("/books/{id}")
-    public Book getBook(@NotNull @PathVariable("id") Long id) {
-        return bookRepository.findById(id).orElseThrow();
-    }
-
-    @PutMapping("/books/{id}")
-    public Book updateBook(@NotNull @PathVariable Long id,
-                           @NotNull @RequestBody @Valid BookRequestToUpdate request) {
-        Book book = bookRepository.findById(id).orElseThrow();
-        book.setTitle(request.getTitle());
-        book.setAuthor(request.getAuthor());
+    @PostMapping("/book")
+    public Book createBook(@NotNull @RequestBody @Valid BookRequestToCreate request) {
+        System.out.println(request.getAuthorID());
+        Book book = new Book(request.getTitle());
+        book.setAuthor(new Author(request.getAuthorID()));
         return bookRepository.save(book);
     }
 
-    @PostMapping("/books")
-    public Book createBook(@NotNull @RequestBody @Valid BookRequestToCreate request) {
-        Book course = new Book(request.getAuthor(), request.getTitle(), request.getTags());
-        return bookRepository.save(course);
+
+    @PutMapping("/book/{id}")
+    public Book updateBook(@NotNull @PathVariable Long id,
+                           @NotNull @RequestBody @Valid BookRequestToUpdate request) {
+        Book book = bookRepository.findById(id).orElseThrow();
+        Book newBook = new Book(book.getId(), request.getTitle(), request.getAuthorID());
+        return bookRepository.save(newBook);
     }
 
-    @DeleteMapping("/books/{id}")
-    public Book deleteBook(@NotNull @PathVariable Long id) {
-        return bookRepository.deleteById(id);
-    }
-
-    @GetMapping("/books/filter")
-    public List<Book> getBooksByTag(@RequestParam(name = "tag", required = false) String tag) {
-        return bookRepository.findBooksByTag(requireNonNullElse(tag, ""));
+    @DeleteMapping("/book/{id}")
+    public void deleteBook(@NotNull @PathVariable Long id) {
+        bookRepository.deleteById(id);
     }
 
 }
